@@ -42,7 +42,7 @@ def Dijkstra(C : np.matrix) -> np.matrix:
         # ...then, for all neighboring nodes that haven't been visited yet....
         for i in range(len(C[shortest_index])):
             # ...if the path over this edge is shorter...
-            if C[shortest_index][i] != 0 and distances[i] > distances[shortest_index] + graph[shortest_index][i]:
+            if C[shortest_index][i] != 0 and distances[i] > distances[shortest_index] + C[shortest_index][i]:
                 # ...Save this path as new shortest path.
                 distances[i] = distances[shortest_index] + C[shortest_index][i]
                 # print("Updating distance of node " + str(i) + " to " + str(distances[i]))
