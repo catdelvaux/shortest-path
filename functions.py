@@ -33,7 +33,7 @@ def Dijkstra(C : np.matrix) -> np.matrix:
                 shortest_distance = distances[i]
                 shortest_index = i
 
-        # print("Visiting node " + str(shortest_index) + " with current distance " + str(shortest_distance))
+        print("Visiting node " + str(shortest_index) + " with current distance " + str(shortest_distance))
 
         if shortest_index == -1:
             # There was no node not yet visited --> We are done
@@ -45,12 +45,12 @@ def Dijkstra(C : np.matrix) -> np.matrix:
             if C[shortest_index][i] != 0 and distances[i] > distances[shortest_index] + C[shortest_index][i]:
                 # ...Save this path as new shortest path.
                 distances[i] = distances[shortest_index] + C[shortest_index][i]
-                # print("Updating distance of node " + str(i) + " to " + str(distances[i]))
+                print("Updating distance of node " + str(i) + " to " + str(distances[i]))
 
         # Lastly, note that we are finished with this node.
         visited[shortest_index] = True
-        #print("Visited nodes: " + str(visited))
-        #print("Currently lowest distances: " + str(distances))
+        print("Visited nodes: " + str(visited))
+        print("Currently lowest distances: " + str(distances))
 
 
 def Bellman_Ford(C : np.matrix) -> np.matrix:
