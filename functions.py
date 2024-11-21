@@ -1,48 +1,60 @@
 import numpy as np
 import csv as csv
 
+def findMin(r, S, line):
+    minim = None
+    indJ = None
+    size = r.shape
 
-def Dijkstra(C: np.matrix) -> np.matrix:
-    """
-    Trouve le chemin le plus court depuis le nœud de départ (0) vers tous les autres nœuds
-    en utilisant l'algorithme de Dijkstra.
+    for i in range(0, size[1]):
+        if((line, i) in S):
+            continue
+        minim = r[0, i]
+        indJ = i
+        break
 
-    :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
-    :return: np.matrix - Matrice contenant les distances les plus courtes depuis le nœud de départ.
-    """
-    n = len(C)  # Nombre total de nœuds dans le graphe
-    distances = [float('inf')] * n  # Liste des distances minimales depuis le nœud de départ
-    visited = [False] * n  # Liste pour marquer les nœuds déjà visités
-    distances[0] = 0  # La distance du nœud de départ à lui-même est 0
+    for i in range(0, size[1]):
+        if((line, i) not in S):
+            if(r[0, i]<minim):
+                minim = r[0, i]
+                indJ = i
 
-    for _ in range(n):  
-        shortest_distance = float('inf')  # Variable pour stocker la plus petite distance trouvée
-        shortest_index = -1  # Index du nœud avec la plus petite distance
+    return (minim, indJ)
 
-        # Trouver le nœud non visité avec la plus petite distance
-        for i in range(n):  
-            if not visited[i] and distances[i] < shortest_distance:
-                shortest_distance = distances[i]
-                shortest_index = i
+def Dijkstra(C : np.matrix) -> np.matrix:
+    D=[]
+    rowShort=[]
+    size=C.shape
+    
+    for i in range(size[0]):
+        rowShort=[]
+        for j in range(size[1]):
+            rowShort.append(np.inf)
+        D.append(rowShort)
 
-        # Si aucun nœud non visité n'a été trouvé, quitter la boucle
-        if shortest_index == -1:
-            break
+    D = np.matrix(D)
 
-        # Marquer le nœud comme visité
-        visited[shortest_index] = True
+    #i, i est noeud de départ
+    for i in range(size[1]):
 
-        # Mettre à jour les distances pour les voisins du nœud courant si un chemin plus court est trouvé
-        for i in range(n):
-            if C[shortest_index, i] < np.inf:  # Ignorer les connexions inexistantes
-                # Calculer une nouvelle distance potentielle via le nœud courant
-                new_distance = distances[shortest_index] + C[shortest_index, i]
-                if new_distance < distances[i]:  # Mettre à jour si une distance plus courte est trouvée
-                    distances[i] = new_distance
+        row = D[i]
+        rowSize=row.shape
+        fridge = []
+        D[i, i] = 0
 
-    # Retourne les distances minimales pour chaque noeud
-    return np.matrix(distances)
+        while(len(fridge)<rowSize[1]):
 
+            Lu, indJ = findMin(row, fridge, i)
+            u = (i, indJ)
+            fridge.append(u)
+
+            for j in range(rowSize[1]):
+
+                if((Lu+C[indJ, j]<D[i, j]) and ((0, j) not in fridge)):
+                    D[i, j] = Lu + C[indJ, j]
+
+
+    return D
 
 
 def Bellman_Ford(C : np.matrix) -> np.matrix:
