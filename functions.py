@@ -56,8 +56,6 @@ def Dijkstra(C : np.matrix) -> np.matrix:
 
     return D
 
-def Dijkstra(C: np.matrix) -> np.matrix:
-    return None
     
 
 def Bellman_Ford(C: np.matrix) -> np.matrix:
@@ -140,6 +138,6 @@ m = np.matrix(matrix)
 
 #print(m)
 
-#print(Dijkstra(m))
+print(Dijkstra(m))
 #print(Bellman_Ford(m))
-print(Floyd_Warshall(m))
+#print(Floyd_Warshall(m))
