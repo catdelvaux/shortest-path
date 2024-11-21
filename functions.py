@@ -3,53 +3,68 @@ import csv as csv
 
 
 def Dijkstra(C: np.matrix) -> np.matrix:
+    return None
+    
+
+def Bellman_Ford(C: np.matrix) -> np.matrix:
     """
-    Trouve le chemin le plus court depuis le nœud de départ (0) vers tous les autres nœuds
-    en utilisant l'algorithme de Dijkstra.
+    Trouve les plus courtes distances depuis le nœud source (0) vers tous les autres nœuds
+    en utilisant l'algorithme de Bellman-Ford.
 
     :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
-    :return: np.matrix - Matrice contenant les distances les plus courtes depuis le nœud de départ.
+    :return: np.matrix - Matrice colonne contenant les distances les plus courtes.
+    :raises: ValueError si un cycle de poids négatif est détecté.
     """
-    n = len(C)  # Nombre total de nœuds dans le graphe
-    distances = [float('inf')] * n  # Liste des distances minimales depuis le nœud de départ
-    visited = [False] * n  # Liste pour marquer les nœuds déjà visités
-    distances[0] = 0  # La distance du nœud de départ à lui-même est 0
+    n = len(C)  # Nombre de nœuds
+    distances = [float('inf')] * n
+    distances[0] = 0  # Le nœud source est fixé à l'indice 0
 
-    for _ in range(n):  
-        shortest_distance = float('inf')  # Variable pour stocker la plus petite distance trouvée
-        shortest_index = -1  # Index du nœud avec la plus petite distance
+    # Étape 2 : Relâchement des arêtes (n-1 fois)
+    for _ in range(n - 1):
+        for u in range(n):
+            for v in range(n):
+                if C[u, v] < np.inf:  # Si l'arête u -> v existe
+                    new_distance = distances[u] + C[u, v]
+                    if new_distance < distances[v]:
+                        distances[v] = new_distance
 
-        # Trouver le nœud non visité avec la plus petite distance
-        for i in range(n):  
-            if not visited[i] and distances[i] < shortest_distance:
-                shortest_distance = distances[i]
-                shortest_index = i
+    # Étape 3 : Vérification des cycles de poids négatif
+    #for u in range(n):
+        #for v in range(n):
+            #if C[u, v] < np.inf and distances[u] + C[u, v] < distances[v]:
+                #raise ValueError("Cycle de poids négatif détecté")
 
-        # Si aucun nœud non visité n'a été trouvé, quitter la boucle
-        if shortest_index == -1:
-            break
-
-        # Marquer le nœud comme visité
-        visited[shortest_index] = True
-
-        # Mettre à jour les distances pour les voisins du nœud courant si un chemin plus court est trouvé
-        for i in range(n):
-            if C[shortest_index, i] < np.inf:  # Ignorer les connexions inexistantes
-                # Calculer une nouvelle distance potentielle via le nœud courant
-                new_distance = distances[shortest_index] + C[shortest_index, i]
-                if new_distance < distances[i]:  # Mettre à jour si une distance plus courte est trouvée
-                    distances[i] = new_distance
-
-    # Retourne les distances minimales pour chaque noeud
+    # Retourne les distances sous forme de matrice colonne
     return np.matrix(distances)
 
 
+import numpy as np
 
-def Bellman_Ford(C : np.matrix) -> np.matrix:
-    return None
+def Floyd_Warshall(C: np.matrix) -> np.matrix:
+    """
+    Trouve les plus courtes distances entre tous les couples de nœuds
+    en utilisant l'algorithme de Floyd-Warshall. Modifie directement la matrice donnée.
 
-def Floyd_Warshall(C : np.matrix) -> np.matrix:
-    return None
+    :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
+    :return: np.matrix - La même matrice, mise à jour avec les distances les plus courtes.
+    """
+    n = len(C)  # Nombre de nœuds
+
+    # Étape principale : relaxation des distances
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                # Mise à jour si un chemin plus court existe via le nœud k
+                C[i, j] = min(C[i, j], C[i, k] + C[k, j])
+
+    # Détection de cycles négatifs (facultatif)
+    for i in range(n):
+        if C[i, i] < 0:
+            raise ValueError("Cycle de poids négatif détecté")
+
+    return C
+
+
 
 
 #main
@@ -69,6 +84,8 @@ m = np.matrix(matrix)
 
 
 
-print(m)
+#print(m)
 
-print(Dijkstra(m))
+#print(Dijkstra(m))
+#print(Bellman_Ford(m))
+print(Floyd_Warshall(m))

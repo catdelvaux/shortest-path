@@ -1,0 +1,42 @@
+import numpy as np
+import csv as csv
+
+matrix=[]
+
+with open('graph.csv', 'r') as f:
+
+    reader = csv.reader(f)
+    for line in reader:
+        for i in range(len(line)):
+            line[i]=int(line[i])
+            if line[i] == 1000000000000:
+                line[i] = np.inf
+        matrix.append(line)
+
+m = np.matrix(matrix)
+print(m)
+
+def Dijkstra(C: np.matrix) -> np.matrix:
+    n = len(C)
+    matrix = np.matrix(np.zeros((n,n)), dtype=int)
+    for j in range(n):
+        L = n * [float('inf')]
+        S = []
+        L[j] = 0
+        while len(S) != n :
+            min = float('inf')
+            u = float('-inf')
+            for i in range(n) :
+                if L[i] < min and i not in S:
+                    u = i
+                    min = L[i]
+            S.append(u)
+            for v in range(n) :
+                if v not in S:
+                    if L[u] + C[u,v] < L[v]:
+                        L[v] = L[u] + C[u,v]
+        matrix[j] = L
+    return matrix
+
+
+print(Dijkstra(m))
