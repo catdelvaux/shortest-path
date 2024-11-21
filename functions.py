@@ -90,33 +90,21 @@ def Bellman_Ford(C: np.matrix) -> np.matrix:
     return np.matrix(distances)
 
 
-import numpy as np
 
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
-    """
-    Trouve les plus courtes distances entre tous les couples de nœuds
-    en utilisant l'algorithme de Floyd-Warshall. Modifie directement la matrice donnée.
-
-    :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
-    :return: np.matrix - La même matrice, mise à jour avec les distances les plus courtes.
-    """
-    n = len(C)  # Nombre de nœuds
-
-    # Étape principale : relaxation des distances
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                # Mise à jour si un chemin plus court existe via le nœud k
-                C[i, j] = min(C[i, j], C[i, k] + C[k, j])
-
-    # Détection de cycles négatifs (facultatif)
+    n = len(C)
+    d = np.matrix(np.zeros((n,n)), dtype=float)
     for i in range(n):
-        if C[i, i] < 0:
-            raise ValueError("Cycle de poids négatif détecté")
+        for j in range(n):
+            d[i,j] = C[i,j]
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                if d[j,i] + d[i,k] < d[j,k]:
+                    d[j,k] = d[j,i] + d[i,k]
+    return d
 
-    return C
-
-
+    
 
 
 #main
