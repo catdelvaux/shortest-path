@@ -31,6 +31,18 @@ def Bellman_Ford(C: np.matrix) -> np.matrix:
 
 # Algorithme de Floyd Warshall
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
+    """
+    @pre: C est une matrice n x n de type numpy représentant la matrice de coûts C du graphe 
+        - C[i, j] contient le poids de l'arête entre les nœuds i et j, ou np.inf si aucune arête directe n'existe.
+        - C[i, i] = 0 pour tous les nœuds i (distance d'un nœud à lui-même).
+
+    @post: Retourne une matrice d (n x n) de type numpy représentant les plus courts chemins entre toutes les paires de nœuds.
+        - Pour chaque paire de nœuds (i, j), d[i, j] est la distance minimale entre ces nœuds.
+        - Si aucun chemin n'existe entre i et j, d[i, j] reste np.inf.
+        - d[i, i] = 0 pour tous i (distance d'un nœud à lui-même).
+        
+    """
+
     n = len(C)
     d = np.matrix(np.zeros((n,n)), dtype=float) # Création d'une matrice nulle initialisée à 0 qui stockera les distances
     # Copie des valeurs de C dans d
