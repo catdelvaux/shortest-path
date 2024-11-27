@@ -31,13 +31,16 @@ def Bellman_Ford(C: np.matrix) -> np.matrix:
 
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
     n = len(C)
-    d = np.matrix(np.zeros((n,n)), dtype=float)
-    for i in range(n):
+    d = np.matrix(np.zeros((n,n)), dtype=float) # Création d'une matrice nulle initialisée à 0 qui stockera les distances
+    # Copie des valeurs de C dans d
+    for i in range(n): 
         for j in range(n):
-            d[i,j] = C[i,j]
+            d[i,j] = C[i,j] 
+    # i représente le noeud intermédiaire potentiel
     for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                if d[j,i] + d[i,k] < d[j,k]:
+    #j et k : représentent une paire de nœuds entre lesquels on cherche le chemin le plus court.
+        for j in range(n): # noeud de départ
+            for k in range(n): # nœud d'arrivée
+                if d[j,i] + d[i,k] < d[j,k]: # si passer par i est plus court, alors on met à jour d[j,k]
                     d[j,k] = d[j,i] + d[i,k]
-    return d
+    return d # Retourne la matrice contenant les distances les plus courtes entre toutes les paires de nœuds
