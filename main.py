@@ -2,7 +2,9 @@ import numpy as np
 import csv as csv
 from functions import Dijkstra, Bellman_Ford, Floyd_Warshall
 
+# Procédure "main" 
 def main():
+    # Lit le fichier .csv contenant la matrice de coûts C du graphe et le convertit en matrice numpy
     matrix = []
     with open('graph.csv', 'r') as f:
         reader = csv.reader(f)
@@ -15,9 +17,11 @@ def main():
     
     m = np.array(matrix)
 
+    # Imprime la matrice de coûts du fichier .csv
     print("Matrice de coûts :")
     print(m)
-    
+
+    # Lance le calcul des matrices de distance des plus courts chemins via les 3 algorithmes et imprime les résultats à l’écran 
     print("\nMatrice des plus courts chemins avec Dijkstra :")
     print(Dijkstra(m))
     

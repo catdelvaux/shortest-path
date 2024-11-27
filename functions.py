@@ -1,6 +1,7 @@
 import numpy as np
 import csv as csv
 
+# Algorithme de Dijkstra
 def Dijkstra(C: np.matrix) -> np.matrix:
     n = len(C)
     matrix = np.matrix(np.zeros((n,n)), dtype=float)
@@ -24,11 +25,11 @@ def Dijkstra(C: np.matrix) -> np.matrix:
     return matrix
 
 
-
+# Algorithme de Bellman Ford
 def Bellman_Ford(C: np.matrix) -> np.matrix:
     return None
 
-
+# Algorithme de Floyd Warshall
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
     n = len(C)
     d = np.matrix(np.zeros((n,n)), dtype=float) # Création d'une matrice nulle initialisée à 0 qui stockera les distances
