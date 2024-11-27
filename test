@@ -2,9 +2,7 @@ import numpy as np
 import csv as csv
 
 matrix=[]
-
 with open('graph.csv', 'r') as f:
-
     reader = csv.reader(f)
     for line in reader:
         for i in range(len(line)):
