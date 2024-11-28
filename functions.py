@@ -22,6 +22,11 @@ def findMin(r, S, line):
     return (minim, indJ)
 
 def Dijkstra(C : np.matrix) -> np.matrix:
+
+    """
+    Trouve 
+    """
+
     D=[]
     rowShort=[]
     size=C.shape
