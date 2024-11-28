@@ -60,10 +60,18 @@ def Dijkstra(C : np.matrix) -> np.matrix:
 def Bellman_Ford(C : np.matrix) -> np.matrix:
     return None
 
-
 def Floyd_Warshall(C : np.matrix) -> np.matrix:
-    return None
-
+    n = len(C)
+    d = np.matrix(np.zeros((n,n)), dtype=float)
+    for i in range(n):
+        for j in range(n):
+            d[i,j] = C[i,j]
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                if d[j,i] + d[i,k] < d[j,k]:
+                    d[j,k] = d[j,i] + d[i,k]
+    return d
 
 #main
 matrix=[]
@@ -80,4 +88,7 @@ with open('graph.csv', 'r') as f:
 
 m = np.matrix(matrix)
 
+
+
 print(Dijkstra(m))
+print(Floyd_Warshall(m))
