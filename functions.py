@@ -63,8 +63,47 @@ def Dijkstra(C: np.matrix) -> np.matrix:
 
 
 # Algorithme de Bellman Ford
-def Bellman_Ford(C: np.matrix) -> np.matrix:
-    return None
+def Bellman_Ford(C: np.ndarray, source: int = 0) -> np.ndarray:
+    """
+    Trouve les plus courtes distances depuis un nœud source vers tous les autres nœuds
+    en utilisant l'algorithme de Bellman-Ford.
+
+    :param C: np.ndarray - Matrice d'adjacence où np.inf représente une absence de connexion.
+    :param source: int - Indice du nœud source (par défaut 0).
+    :return: np.ndarray - Tableau contenant les distances les plus courtes depuis le nœud source.
+    :raises ValueError: Si un cycle de poids négatif est détecté.
+    """
+    n = len(C)  # Nombre de nœuds
+    all_distances = np.zeros((n, n))  # Matrice pour stocker les distances
+
+    for source in range(n):
+        # Initialisation des distances pour le nœud source
+        distances = np.full(n, float('inf')) # Toutes les distances sont initialisées à l'infini
+        distances[source] = 0 # La distance du nœud source à lui-même est toujours 0
+
+        # Relaxation des arêtes (n-1 fois)
+        # Chaque itération garantit que les distances les plus courtes à au moins un nœud sont calculées.
+        for _ in range(n - 1):
+            for u in range(n):
+                for v in range(n):
+                    if C[u, v] < np.inf:  # Si l'arête u -> v existe
+                        # Si passer par u réduit la distance vers v, on met à jour distances[v]
+                        if distances[u] + C[u, v] < distances[v]:
+                            distances[v] = distances[u] + C[u, v]
+
+        # Vérification de la présence de cycles de poids négatif
+        for u in range(n):
+            for v in range(n):
+                if C[u, v] < np.inf and distances[u] + C[u, v] < distances[v]:
+                    # Si on peut encore réduire une distance après n-1 itérations, il y a un cycle négatif
+                    raise ValueError("Le graphe contient un cycle de poids négatif.")
+
+
+        # Stockage des distances depuis ce nœud source
+        all_distances[source] = distances
+
+    return all_distances
+
 
 # Algorithme de Floyd Warshall
 def Floyd_Warshall(C: np.matrix) -> np.matrix:
