@@ -58,36 +58,37 @@ def Dijkstra(C : np.matrix) -> np.matrix:
 
     
 
-def Bellman_Ford(C: np.matrix) -> np.matrix:
+def Bellman_Ford(C: np.ndarray, source: int = 0) -> np.ndarray:
     """
-    Trouve les plus courtes distances depuis le nœud source (0) vers tous les autres nœuds
+    Trouve les plus courtes distances depuis un nœud source vers tous les autres nœuds
     en utilisant l'algorithme de Bellman-Ford.
 
-    :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
-    :return: np.matrix - Matrice colonne contenant les distances les plus courtes.
-    :raises: ValueError si un cycle de poids négatif est détecté.
+    :param C: np.ndarray - Matrice d'adjacence où np.inf représente une absence de connexion.
+    :param source: int - Indice du nœud source (par défaut 0).
+    :return: np.ndarray - Tableau contenant les distances les plus courtes depuis le nœud source.
+    :raises ValueError: Si un cycle de poids négatif est détecté.
     """
     n = len(C)  # Nombre de nœuds
-    distances = [float('inf')] * n
-    distances[0] = 0  # Le nœud source est fixé à l'indice 0
+    all_distances = np.zeros((n, n))  # Matrice pour stocker les distances
 
-    # Étape 2 : Relâchement des arêtes (n-1 fois)
-    for _ in range(n - 1):
-        for u in range(n):
-            for v in range(n):
-                if C[u, v] < np.inf:  # Si l'arête u -> v existe
-                    new_distance = distances[u] + C[u, v]
-                    if new_distance < distances[v]:
-                        distances[v] = new_distance
+    for source in range(n):
+        # Initialisation des distances pour le nœud source
+        distances = np.full(n, float('inf'))
+        distances[source] = 0
 
-    # Étape 3 : Vérification des cycles de poids négatif
-    #for u in range(n):
-        #for v in range(n):
-            #if C[u, v] < np.inf and distances[u] + C[u, v] < distances[v]:
-                #raise ValueError("Cycle de poids négatif détecté")
+        # Relaxation des arêtes (n-1 fois)
+        for _ in range(n - 1):
+            for u in range(n):
+                for v in range(n):
+                    if C[u, v] < np.inf:  # Si l'arête u -> v existe
+                        if distances[u] + C[u, v] < distances[v]:
+                            distances[v] = distances[u] + C[u, v]
 
-    # Retourne les distances sous forme de matrice colonne
-    return np.matrix(distances)
+
+        # Stockage des distances depuis ce nœud source
+        all_distances[source] = distances
+
+    return all_distances
 
 
 import numpy as np
@@ -138,6 +139,7 @@ m = np.matrix(matrix)
 
 #print(m)
 
-print(Dijkstra(m))
+#print(Dijkstra(m))
 #print(Bellman_Ford(m))
 #print(Floyd_Warshall(m))
+print(Dijkstra(m)==Bellman_Ford(m))
