@@ -63,7 +63,7 @@ def Dijkstra(C: np.matrix) -> np.matrix:
 
 
 # Algorithme de Bellman Ford
-def Bellman_Ford(C: np.ndarray, source: int = 0) -> np.ndarray:
+def Bellman_Ford(C: np.matrix) -> np.ndarray:
     """
     Trouve les plus courtes distances depuis un nœud source vers tous les autres nœuds
     en utilisant l'algorithme de Bellman-Ford.
@@ -75,6 +75,7 @@ def Bellman_Ford(C: np.ndarray, source: int = 0) -> np.ndarray:
     """
     n = len(C)  # Nombre de nœuds
     all_distances = np.zeros((n, n))  # Matrice pour stocker les distances
+    source = 0
 
     for source in range(n):
         # Initialisation des distances pour le nœud source
