@@ -63,14 +63,14 @@ def Dijkstra(C: np.matrix) -> np.matrix:
 
 
 # Algorithme de Bellman Ford
-def Bellman_Ford(C: np.matrix) -> np.ndarray:
+def Bellman_Ford(C: np.matrix) -> np.matrix:
     """
     Trouve les plus courtes distances depuis un nœud source vers tous les autres nœuds
     en utilisant l'algorithme de Bellman-Ford.
 
-    :param C: np.ndarray - Matrice d'adjacence où np.inf représente une absence de connexion.
+    :param C: np.matrix - Matrice d'adjacence où np.inf représente une absence de connexion.
     :param source: int - Indice du nœud source (par défaut 0).
-    :return: np.ndarray - Tableau contenant les distances les plus courtes depuis le nœud source.
+    :return: np.matrix - Tableau contenant les distances les plus courtes depuis le nœud source.
     :raises ValueError: Si un cycle de poids négatif est détecté.
     """
     n = len(C)  # Nombre de nœuds
